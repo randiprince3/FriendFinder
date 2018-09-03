@@ -172,7 +172,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
 <script>
 $("#submit").on("click", function(event) {
-      event.preventDefault();
+    //   event.preventDefault();
 
       function validateForm() {
         var isValid = true;
@@ -189,24 +189,13 @@ $("#submit").on("click", function(event) {
         });
         return isValid;
       }
-      if (validateForm()) {
-        // Create an object for the user"s data
+      if (validateForm() === true) {
+        var scores = JSON.stringify([$("#q1").val(), $("#q2").val(), $("#q3").val(), $("#q4").val(), $("#q5").val(), $("#q6").val(), $("#q7").val(), $("#q8").val(), $("#q9").val(), $("#q10").val(), ]);
         var userData = {
           name: $("#name").val(),
           photo: $("#photo").val(),
-          scores: [
-            $("#q1").val(),
-            $("#q2").val(),
-            $("#q3").val(),
-            $("#q4").val(),
-            $("#q5").val(),
-            $("#q6").val(),
-            $("#q7").val(),
-            $("#q8").val(),
-            $("#q9").val(),
-            $("#q10").val()
-          ]
-        };
+          scores: scores
+        }
         var currentURL = window.location.origin;
 
         $.post(currentURL + "/api/friends", userData, function(data) {
