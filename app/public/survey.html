@@ -6,7 +6,6 @@
     <title>Friend Finder Survey</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">    
-    <script src="https://code.jquery.com/jquery.js"></script>
   </head>
   <body>
 
@@ -167,7 +166,7 @@
       </div>
 
 </div>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
 <script>
@@ -190,27 +189,35 @@ $("#submit").on("click", function(event) {
         return isValid;
       }
       if (validateForm() === true) {
-        var scores = JSON.stringify([$("#q1").val(), $("#q2").val(), $("#q3").val(), $("#q4").val(), $("#q5").val(), $("#q6").val(), $("#q7").val(), $("#q8").val(), $("#q9").val(), $("#q10").val(), ]);
         var userData = {
           name: $("#name").val(),
           photo: $("#photo").val(),
-          scores: scores
-        }
-        var currentURL = window.location.origin;
+          scores: [
+            $("#q1").val(),
+            $("#q2").val(),
+            $("#q3").val(),
+            $("#q4").val(),
+            $("#q5").val(),
+            $("#q6").val(),
+            $("#q7").val(),
+            $("#q8").val(),
+            $("#q9").val(),
+            $("#q10").val()
+          ]
+        };
 
-        $.post(currentURL + "/api/friends", userData, function(data) {
+        // AJAX post the data to the friends API.
 
-          $("#match-name").text(data.name);
-          $("#match-img").attr("src", data.photo);
-
-          $("#resultModal").modal("toggle");
-
-        });
-      } else {
-        alert("Please fill out all fields.");
-      }
-    });
-
+       $.post('/api/friends', userData)
+      		.done(function(data) {
+      			// console.log('response = ' + JSON.stringify(data));
+      			// Set the name and image values of friend match
+      			$('#match-name').html(data.name);
+		    	$("#match-img").attr("src", data.photo);
+		    	// Pop open the modal dialog
+      			$('resultModal').modal('open');
+      		});
+		}})
 </script>
 
 </body>
